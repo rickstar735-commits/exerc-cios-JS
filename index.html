@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exercícios de JS</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+  h1 { text-align: center; }
+  .botoes button { margin: 4px; padding: 8px 12px; cursor: pointer; }
+  #saida { margin-top: 20px; padding: 15px; background: white; border: 1px solid #999; min-height: 60px; word-wrap: break-word; }
+  #ex2 { margin-top: 20px; padding: 15px; background: white; border: 1px solid #999; }
+  #resultado2 { font-size: 28px; margin-top: 10px; min-height: 40px; }
+  .gira { display: inline-block; color: red; animation: rodar 1.5s linear infinite; }
+  @keyframes rodar { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<h1>Exercícios de JS</h1>
+
+<div class="botoes">
+  <button onclick="exercicio1()">Ex 1</button>
+  <button onclick="exercicio3()">Ex 3</button>
+  <button onclick="exercicio4()">Ex 4</button>
+  <button onclick="exercicio5()">Ex 5</button>
+  <button onclick="exercicio6()">Ex 6</button>
+  <button onclick="exercicio7()">Ex 7</button>
+  <button onclick="exercicio8()">Ex 8</button>
+  <button onclick="exercicio9()">Ex 9</button>
+  <button onclick="exercicio10()">Ex 10</button>
+  <button onclick="exercicio11()">Ex 11</button>
+  <button onclick="exercicio12()">Ex 12</button>
+  <button onclick="exercicio13()">Ex 13</button>
+  <button onclick="exercicio14()">Ex 14</button>
+  <button onclick="exercicio15()">Ex 15</button>
+</div>
+
+<!-- O exercício 2 é com input, por isso fica aqui direto na página -->
+<div id="ex2">
+  <b>Exercício 2:</b> escreve números (o 5 vai rodar)<br><br>
+  <input type="text" id="campo" placeholder="ex: 12534565">
+  <div id="resultado2"></div>
+</div>
+
+<div id="saida">A saída dos exercícios aparece aqui.</div>
+
+<script>
+// função pequena para escrever na caixa de saída
+function mostrar(texto) {
+  document.getElementById("saida").innerHTML = texto;
+}
+
+// ver se um número é primo (usada no exercício 1)
+function ehPrimo(n) {
+  if (!Number.isInteger(n) || n < 2) return false;
+  for (let i = 2; i * i <= n; i++) {
+    if (n % i === 0) return false;
+  }
+  return true;
+}
+
+// ---------------- Exercício 1 ----------------
+// pára quando o mesmo número negativo for digitado 3 vezes
+function exercicio1() {
+  let primos = 0;
+  let neutros = 0; // neutro = zero
+  let somaNegativos = 0;
+  let contagem = {}; // guarda quantas vezes cada negativo apareceu
+  let continuar = true;
+
+  while (continuar) {
+    let entrada = prompt("Digite um número:");
+    if (entrada === null) break; // se cancelar sai
+
+    let num = Number(entrada);
+    if (entrada.trim() === "" || isNaN(num)) {
+      alert("Isso não é um número!");
+      continue;
+    }
+
+    if (ehPrimo(num)) primos++;
+    if (num === 0) neutros++;
+
+    if (num < 0) {
+      somaNegativos += num;
+      contagem[num] = (contagem[num] || 0) + 1;
+      if (contagem[num] === 3) {
+        continuar = false;
+      }
+    }
+  }
+
+  let texto = "Quantidade de primos: " + primos +
+              "<br>Quíntuplo dos neutros: " + (neutros * 5) +
+              "<br>Soma dos negativos: " + somaNegativos;
+  mostrar(texto);
+}
+
+// ---------------- Exercício 2 ----------------
+document.getElementById("campo").addEventListener("input", function () {
+  let valor = this.value;
+  let html = "";
+  for (let i = 0; i < valor.length; i++) {
+    if (valor[i] === "5") {
+      html += '<span class="gira">5</span>';
+    } else {
+      html += valor[i];
+    }
+  }
+  document.getElementById("resultado2").innerHTML = html;
+});
+
+// ---------------- Exercício 3 ----------------
+function exercicio3() {
+  let entrada = prompt("Digite números separados por ponto e vírgula (ex: 2;3;4):");
+  if (entrada === null) return;
+
+  let partes = entrada.split(";");
+  let soma = 0;
+
+  for (let i = 0; i < partes.length; i++) {
+    let n = Number(partes[i]);
+    if (partes[i].trim() === "" || isNaN(n)) {
+      alert("O valor '" + partes[i] + "' não é válido.");
+      return;
+    }
+    soma += n;
+  }
+
+  if (soma < 0 || !Number.isInteger(soma)) {
+    mostrar("Soma = " + soma + "<br>Não dá para calcular o factorial desse valor.");
+    return;
+  }
+
+  let fatorial = 1;
+  for (let i = 2; i <= soma; i++) {
+    fatorial *= i;
+  }
+
+  mostrar("Soma = " + soma + "<br>Factorial de " + soma + " = " + fatorial);
+}
+
+// ---------------- Exercício 4 ----------------
+function somarDois() {
+  let a = Number(prompt("Primeiro número:"));
+  let b = Number(prompt("Segundo número:"));
+  let resultado = a + b;
+  alert("O resultado é: " + resultado);
+}
+
+function exercicio4() {
+  somarDois();
+}
+
+// ---------------- Exercício 5 ----------------
+function exercicio5() {
+  let pares = [];
+  let impares = [];
+
+  while (true) {
+    let entrada = prompt("Digite um número (ou escreva 'fim' para terminar):");
+    if (entrada === null || entrada.toLowerCase() === "fim") break;
+
+    let num = Number(entrada);
+    if (entrada.trim() === "" || isNaN(num)) {
+      alert("Número inválido!");
+      continue;
+    }
+
+    if (num % 2 === 0) {
+      pares.push(num);
+    } else {
+      impares.push(num);
+    }
+  }
+
+  mostrar("Pares: [" + pares.join(", ") + "]<br>Ímpares: [" + impares.join(", ") + "]");
+}
+
+// ---------------- Exercício 6 ----------------
+function exercicio6() {
+  let lista = [];
+  for (let i = 1; i <= 100; i++) {
+    if (i % 3 === 0 && i % 5 === 0) {
+      lista.push("FizzBuzz");
+    } else if (i % 3 === 0) {
+      lista.push("Fizz");
+    } else if (i % 5 === 0) {
+      lista.push("Buzz");
+    } else {
+      lista.push(i);
+    }
+  }
+  mostrar(lista.join("<br>"));
+}
+
+// ---------------- Exercício 7 ----------------
+// troca as letras de lugar para criar outras palavras
+function embaralhar(lista) {
+  let copia = lista.slice();
+  for (let i = copia.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = copia[i];
+    copia[i] = copia[j];
+    copia[j] = temp;
+  }
+  return copia;
+}
+
+function exercicio7() {
+  let palavra = prompt("Digite uma palavra:");
+  if (palavra === null || palavra.trim() === "") return;
+  palavra = palavra.trim();
+
+  let novas = [];
+  let tentativas = 0;
+
+  // tenta até conseguir 5 palavras diferentes (palavras curtas podem não ter 5)
+  while (novas.length < 5 && tentativas < 300) {
+    let nova = embaralhar(palavra.split("")).join("");
+    if (nova !== palavra && !novas.includes(nova)) {
+      novas.push(nova);
+    }
+    tentativas++;
+  }
+
+  if (novas.length < 5) {
+    mostrar("A palavra '" + palavra + "' é muito curta, só deu para gerar " + novas.length +
+            " palavras:<br>" + novas.join("<br>"));
+  } else {
+    mostrar("Palavras geradas a partir de '" + palavra + "':<br>" + novas.join("<br>"));
+  }
+}
+
+// ---------------- Exercício 8 ----------------
+function exercicio8() {
+  let frase = prompt("Digite uma frase:");
+  if (frase === null || frase.trim() === "") return;
+
+  let palavras = frase.trim().split(/\s+/);
+  let novas = [];
+  let tentativas = 0;
+
+  while (novas.length < 5 && tentativas < 300) {
+    let nova = embaralhar(palavras).join(" ");
+    if (nova !== palavras.join(" ") && !novas.includes(nova)) {
+      novas.push(nova);
+    }
+    tentativas++;
+  }
+
+  if (novas.length === 0) {
+    mostrar("A frase tem poucas palavras, não deu para gerar outras.");
+  } else {
+    mostrar("Frases geradas:<br>" + novas.join("<br>"));
+  }
+}
+
+// ---------------- Exercício 9 ----------------
+function exercicio9() {
+  let numero = prompt("Digite um número:");
+  if (numero === null || numero.trim() === "" || isNaN(Number(numero))) {
+    alert("Número inválido!");
+    return;
+  }
+  numero = numero.trim();
+
+  let invertido = numero.split("").reverse().join("");
+
+  if (numero === invertido) {
+    mostrar(numero + " é palíndromo.");
+  } else {
+    mostrar(numero + " NÃO é palíndromo.");
+  }
+}
+
+// ---------------- Exercício 10 ----------------
+function exercicio10() {
+  let nome = prompt("Digite um nome:");
+  if (nome === null || nome.trim() === "") return;
+
+  let vogais = "aeiouáàâãéêíóôõúü";
+  let total = 0;
+  let resultado = "";
+
+  for (let i = 0; i < nome.length; i++) {
+    let letra = nome[i];
+    if (vogais.includes(letra.toLowerCase())) {
+      total++;
+      resultado += "<u>" + letra + "</u>";
+    } else {
+      resultado += letra;
+    }
+  }
+
+  mostrar(resultado + "<br>Quantidade de vogais: " + total);
+}
+
+// ---------------- Exercício 11 ----------------
+// as posições ímpares ficam em maiúscula (contando os espaços também)
+function exercicio11() {
+  let frase = prompt("Digite uma frase em minúsculas:");
+  if (frase === null) return;
+  frase = frase.toLowerCase();
+
+  let saida = "";
+  for (let i = 0; i < frase.length; i++) {
+    if (i % 2 === 1) {
+      saida += frase[i].toUpperCase();
+    } else {
+      saida += frase[i];
+    }
+  }
+
+  mostrar(saida);
+}
+
+// ---------------- Exercício 12 ----------------
+function exercicio12() {
+  let texto = prompt("Digite um texto:");
+  if (texto === null || texto.trim() === "") return;
+
+  let palavras = texto.trim().split(/\s+/);
+  palavras.sort(function (a, b) {
+    return a.localeCompare(b, "pt");
+  });
+
+  mostrar(palavras.join(" "));
+}
+
+// ---------------- Exercício 13 ----------------
+function exercicio13() {
+  let texto = prompt("Digite um texto:");
+  if (texto === null) return;
+
+  let invertido = "";
+  for (let i = texto.length - 1; i >= 0; i--) {
+    invertido += texto[i];
+  }
+
+  mostrar(invertido);
+}
+
+// ---------------- Exercício 14 ----------------
+function exercicio14() {
+  let texto = prompt("Digite um texto:");
+  if (texto === null) return;
+
+  let semVogais = texto.replace(/[aeiouáàâãéêíóôõúü]/gi, "");
+  mostrar(semVogais);
+}
+
+// ---------------- Exercício 15 ----------------
+function exercicio15() {
+  let vetor = [];
+
+  for (let i = 0; i < 15; i++) {
+    let n = Number(prompt("Digite o número inteiro da posição " + (i + 1) + " de 15:"));
+    if (isNaN(n) || !Number.isInteger(n)) {
+      alert("Tem de ser um número inteiro! Tenta de novo.");
+      i--; // repete a mesma posição
+    } else {
+      vetor.push(n);
+    }
+  }
+
+  let maior = Math.max(...vetor);
+
+  if (maior === 0) {
+    mostrar("O maior valor é 0, não dá para dividir por zero!");
+    return;
+  }
+
+  let resultado = [];
+  for (let i = 0; i < vetor.length; i++) {
+    resultado.push((vetor[i] / maior).toFixed(2));
+  }
+
+  mostrar("Vetor original: [" + vetor.join(", ") + "]<br>" +
+          "Maior valor: " + maior + "<br>" +
+          "Vetor depois da divisão: [" + resultado.join(", ") + "]");
+}
+</script>
+
+</body>
+</html>
